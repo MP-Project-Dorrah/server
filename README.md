@@ -8,6 +8,7 @@ Whether you’re buying, selling, or providing Evaluation Services, this website
 4. [ UML diagrm.](#uml)
 5. [ Installation. ](#installation)
 6. [ Dependencies. ](#dep)
+7. [ Additional information. ](#slid)
 
 
 
@@ -184,5 +185,7 @@ GET           | user          |`/message/:id`                    |              
 
 ## for more information
 - [ Slides. ](#slid) 
-- [ Deployed App Link. ](#slid)
+- [ Frontend Deployed Link. ](#slid)
+- [ Backend Deployed Link. ](#slid)
 - [ Frontend Repo ](https://github.com/MP-Project-Dorrah/client)
+- [ Trello ](https://trello.com/b/bmMaTJII/mp-project-dorrah)
