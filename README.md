@@ -142,7 +142,7 @@ GET           | user          |`/posts/userProperty/:postedBy`   |              
 POST          | user          |`/interested`                     |{id , userId}                                                        | 200    |400
 GET           | user          |`/interested/:_id`                |                                                                     | 200    |400
 DELETE        | user          |`/SUBSCRIBE/:_id`                 |                                                                     | 200    |400
-POST          | user          |`/SUBSCRIBE/update`               |{userId}                                                             | 200    |400
+POST          | user          |`/SUBSCRIBE`                      |{amount, id  , userId}                                               | 200    |400
 POST          | user          |`/appointment`                    |{onProperty ، client ، serviceProvider ، type }                      | 200    |400 
 DELETE        | user          |`/appointment/:_id`               |                                                                     | 200    |400
 GET           | user          |`/appointment/:id`                |                                                                     | 200    |400 
