@@ -18,9 +18,7 @@
 <a name="uml"></a>
 
 ## UML diagram
-![Untitled Diagram drawio-19](https://user-images.githubusercontent.com/92247950/146519206-914ec7dd-cdb9-4e63-b9a8-91ccc71ee83d.png)
-
-
+![Untitled Diagram-Page-2 drawio](https://user-images.githubusercontent.com/92247950/146674658-f3f4aaff-6e9c-42a6-aada-494fdf9bfdbf.png)
 
 
 
@@ -126,33 +124,33 @@
 <a name="routes"></a>
 
 ## Routes
-HTTP Method   | authorize     |    Path                                |  Request Body         
-------------- | -----------   | ---------------------------            |---------------------- 
-POST          | everyone      |`/user/create`                          |{email, username, name, password, phoneNumber, img, nationalId, role}
-POST          | everyone      |`/user/log`                             |{email or username, password}     
-GET           | everyone      |`/user/`                                |                       
-GET           | everyone      |`/user/confirmation/:email/:token`      |                       
-PUT           | everyone      |`/user/forgetPassword`                  |{email}     
-PUT           | everyone      |`/user/resetPassword`                   |{resetLink, newPassword}  
-GET           | everyone      |`/user/:_id"`                           |                       
-POST          | everyone      |`/user/googlelogin`                     |{idToken} 
-DELETE        | user          |`/user/`                                |
-POST          | user          |`/user/newRate`                         |{user , rate} 
-PUT           | user          |`/propety/`                             |{by, onPost}
-GET           | user          |`/propety/:onPropety`                   |
-POST          | user          |`/Property/create`                      |{title, by, onPost}
-DELETE        | user          |`/Property/delete/:_id`                 |
-GET           | user          |`/posts/userProperty/:postedBy`         |
-POST          | user          |`/interested`                           |{id , userId}
-GET           | user          |`/interested/:_id`                      |
-DELETE        | user          |`/SUBSCRIBE/:_id`                       |
-POST          | user          |`/SUBSCRIBE/update`                     |{userId}
-POST          | user          |`/appointment`                          |{onProperty ، client ، serviceProvider ، type }
-DELETE        | user          |`/appointment/:_id`                     |
-GET           | user          |`/appointment/:id`                      |
-POST          | user          |`/room`                                 |{ user, sendToUser }
-POST          | user          |`/message`                              | {content , user , room}
-GET           | user          |`/message/:id`                          |
+HTTP Method   | authorize     |    Path                          |  Request Body                                                       |Success | Error
+------------- | -----------   | ---------------------------      |----------------------                                               |--------|-----------
+POST          | everyone      |`/user/create`                    |{email, username, name, password,phoneNumber, img, nationalId, role} | 200    |400           
+POST          | everyone      |`/user/log`                       |{email or username, password}                                        | 201    |400
+GET           | everyone      |`/user/`                          |                                                                     | 200    |400
+GET           | everyone      |`/user/confirmation/:email/:token`|                                                                     | 200    |400
+PUT           | everyone      |`/user/forgetPassword`            |{email}                                                              | 200    |400
+PUT           | everyone      |`/user/resetPassword`             |{resetLink, newPassword}                                             | 200    |400
+GET           | everyone      |`/user/:_id"`                     |                                                                     | 200    |400
+POST          | everyone      |`/user/googlelogin`               |{idToken}                                                            | 200    |400
+DELETE        | user          |`/user/`                          |                                                                     | 200    |400
+POST          | user          |`/user/newRate`                   |{user , rate}                                                        | 200    |400
+PUT           | user          |`/propety/`                       |{by, onPost}                                                         | 200    |400
+GET           | user          |`/propety/:onPropety`             |                                                                     | 200    |400                                                       
+POST          | user          |`/Property/create`                |{title, by, onPost}                                                  | 200    |400
+DELETE        | user          |`/Property/delete/:_id`           |                                                                     | 200    |400
+GET           | user          |`/posts/userProperty/:postedBy`   |                                                                     | 200    |400
+POST          | user          |`/interested`                     |{id , userId}                                                        | 200    |400
+GET           | user          |`/interested/:_id`                |                                                                     | 200    |400
+DELETE        | user          |`/SUBSCRIBE/:_id`                 |                                                                     | 200    |400
+POST          | user          |`/SUBSCRIBE/update`               |{userId}                                                             | 200    |400
+POST          | user          |`/appointment`                    |{onProperty ، client ، serviceProvider ، type }                      | 200    |400 
+DELETE        | user          |`/appointment/:_id`               |                                                                     | 200    |400
+GET           | user          |`/appointment/:id`                |                                                                     | 200    |400 
+POST          | user          |`/room`                           |{ user, sendToUser }                                                 | 200    |400
+POST          | user          |`/message`                        | {content , user , room}                                             | 200    |400
+GET           | user          |`/message/:id`                    |                                                                     | 200    |400                                                          
 
 
 <a name="installation"></a>
