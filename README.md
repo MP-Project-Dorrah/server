@@ -15,100 +15,103 @@ Whether you’re buying, selling, or providing Evaluation Services, this website
 <a name="models"></a>
 
 ## Models
-#### - Role model 
-```
-{
-  role: { type: String, required: true },
-}
-```
-#### - User model 
-```
-{
-  email: { type: String, required: true, unique: true, validate: { validator: validator.isEmail, message: "{VALUE} is not a valid email"}},
-  username: { type: String, required: true },
-  name: { type: String, required: true },
-  password: { type: String },
-  phoneNumber: { type: String },
-  nationalId: { type: String },
-  role: { type: mongoose.Schema.Types.ObjectId, ref: "Role", required: true },
-  isDeleted: { type: Boolean, default: false },
-  img: {type: String, default:"https://i.pinimg.com/564x/e7/c3/f4/e7c3f4a076b8472e0b1bd9c00a847f7f.jpg"},
-  isVerified: { type: Boolean, default: false },
-  resetLink: {data: String, default: ""},
-  sellerRateArr: {type: array, default: []},
-  providerRateArr:  {type: array, default: []},
-  providerAvailability : { type: Boolean, default: true },
-  providerCity: {data: String, default: ""},
-  providerPrice: {data: Number, default: ""},
-  providerCertifacitonArr : {type: array , default: []}
-}
 
-```
+#### - Role model 
+Key           |     Type               |  options           | default value
+------------- | ---------------        | -----------        |------
+role          |   String               | required, unique   | n/a
+
+
+#### - User model 
+
+Key                      |     Type               |  options           | default value
+-------------            | ---------------        | -----------        |------
+email                    |   String               | required, unique   | n/a
+username                 |   String               | required, unique   | n/a
+name                     |   String               | required           | n/a
+password                 |   String               | required           | n/a
+phoneNumber              |   String               | required, unique   | n/a
+nationalId               |   String               | required, unique   | n/a
+role                     |   ref.                 | required           | n/a
+isDeleted                |   Boolean              |                    | false
+img                      |   String               | required           | "https://i.pinimg.com/564x/e7/c3/f4/e7c3f4a076b8472e0b1bd9c00a847f7f.jpg"
+isVerified               |   Boolean              |                    | false
+resetLink                |   String               |                    | ""
+sellerRateArr            |   Array                |                    | []
+providerRateArr          |   Array                |                    | []
+providerAvailability     |   Boolean              |                    | true
+providerCity             |   String               | required           | n/a
+providerPrice            |   String               | required           | n/a
+providerCertifacitonArr  |   Array                |                    | []
+
+
+
 #### - Interested model 
-```
-{
-  by: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
-  onProperty: { type: mongoose.Schema.Types.ObjectId, ref: "Property", required: true },
-}
-```
+
+Key           |     Type            |  options  | default value
+------------- | ---------------     | --------- |------
+by            |   ref               | required  | n/a
+onProperty    |   ref               | required  | n/a
+
+
 #### - Property model 
-```
-{
-  imgArr: { type: array, defult: "" },
-  date: { type: Date, default: new Date() },
-  name: { type: String, required: true },
-  price: { data: Number, default: "" },
-  City : { type: String, required: true }
-  location :{ type: String, required: true }
-  describe : { type: String, required: true }
-  isDeleted : { type: boolean, defult: false }
-  postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "user"  }
-  propertyHighlights: {type: Object}
-  
-}
-```
+
+Key                  |     Type               |  options           | default value
+-------------        | ---------------        | -----------        |------
+imgArr               |   Array                |                    | ""
+date                 |   Date                 |                    | new Date()
+name                 |   String               | required           | n/a
+price                |   Number               | required           | n/a
+City                 |   String               | required           | n/a
+location             |   String               | required           | n/a
+describe             |   String               | required           | n/a
+isDeleted            |   boolean              |                    | false
+postedBy             |   ref                  | required           | n/a
+propertyHighlights   |   Object               | required           | n/a
+
+
 #### - Appointment model 
-```
-{
-  onProperty: { type: mongoose.Schema.Types.ObjectId, ref: "Property"  },
-  isDeleted: { type: Boolean, default: false },
-  date: { type: Date, default: new Date() },
-  serviceProvider: { type: mongoose.Schema.Types.ObjectId, ref: "user"  },
-  client: {type: mongoose.Schema.Types.ObjectId, ref: "user"},
-  isCanceled: { type: Boolean, default: false },
-}
-```
+
+Key                  |     Type               |  options           | default value
+-------------        | ---------------        | -----------        |------
+onProperty           |   ref                  |  required          | n/a
+date                 |   Date                 |                    | new Date()
+isDeleted            |   Boolean              |                    | false
+serviceProvider      |   ref                  | required           | n/a
+client               |   ref                  | required           | n/a
+isCanceled           |   Boolean              |                    | false
+
+
 
 #### - Subscribe model 
-```
-{
-  sellerRef: { type: mongoose.Schema.Types.ObjectId, ref: "user"  },
-  amount: { },
-  startDate: { type: Date, default: new Date() },
-  endDate: {type: Date , defult:new Date() },
-  isCanceled: { type: Boolean, default: false },
-}
-```
+
+Key                  |     Type               |  options           | default value
+-------------        | ---------------        | -----------        |------
+sellerRef            |   ref                  |  required          | n/a
+amount               |   Number               |  required          | n/a
+startDate            |   Date                 |                    | new Date()
+endDate              |   Date                 |                    | n/a
+isCanceled           |   Boolean              |                    | false
+
 
 #### - Room model 
-```
-{
-  user1: { type: mongoose.Schema.Types.ObjectId, ref: "user"  },
-  user2: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-  msgRef: {  type: mongoose.Schema.Types.ObjectId, ref: "Message"  },
 
-}
-```
+Key              |     Type               |  options           | default value
+-------------    | ---------------        | -----------        |------
+user1            |   ref                  |  required          | n/a
+user2            |   ref                  |  required          | n/a
+msgRef           |   ref                  |   required         | n/a
+
+
 
 #### - Message model 
-```
-{
-  msgContent: { type: String, required: true },
-  user1: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-  roomRef: {  type: mongoose.Schema.Types.ObjectId, ref: "Room"  },
+Key              |     Type               |  options           | default value
+-------------    | ---------------        | -----------        |------
+msgContent       |   String               |  required          | n/a
+user1            |   ref                  |  required          | n/a
+roomRef          |   ref                  |   required         | n/a
 
-}
-```
+
 
 
 <a name="er"></a>
