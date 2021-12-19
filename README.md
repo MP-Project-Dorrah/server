@@ -1,24 +1,13 @@
 # Real Estate Website
+Whether you’re buying, selling, or providing Evaluation Services, this website has something for you. if you want to sell any Property, you can subscribe to this website and start selling, if you are looking for a home you would love to live in, you can discover Properties and take an appointment to see it, if you are an architect, you can provide an evaluation service and get paid for it.
 
 ## Table of Contents
-1. [ UML diagrm.](#uml)
+1. [ Models. ](#models)
 2. [ ER diagrm. ](#er)
-3. [ Models. ](#models)
-4. [ Routes. ](#routes)
+3. [ Routes. ](#routes)
+4. [ UML diagrm.](#uml)
 5. [ Installation. ](#installation)
 6. [ Dependencies. ](#dep)
-
-
-<a name="er"></a>
-
-## ER diagram
-![Untitled Diagram drawio-24](https://user-images.githubusercontent.com/92247950/146674221-5d3d6171-ac44-48ab-bd8e-e8e503882bf1.png)
-
-
-<a name="uml"></a>
-
-## UML diagram
-![Untitled Diagram-Page-2 drawio](https://user-images.githubusercontent.com/92247950/146674658-f3f4aaff-6e9c-42a6-aada-494fdf9bfdbf.png)
 
 
 
@@ -121,6 +110,11 @@
 ```
 
 
+<a name="er"></a>
+
+## ER diagram
+![Untitled Diagram drawio-24](https://user-images.githubusercontent.com/92247950/146674221-5d3d6171-ac44-48ab-bd8e-e8e503882bf1.png)
+
 <a name="routes"></a>
 
 ## Routes
@@ -153,6 +147,14 @@ POST          | user          |`/message`                        | {content , us
 GET           | user          |`/message/:id`                    |                                                                     | 200    |400                                                          
 
 
+
+<a name="uml"></a>
+
+## UML diagram
+![Untitled Diagram-Page-2 drawio](https://user-images.githubusercontent.com/92247950/146674658-f3f4aaff-6e9c-42a6-aada-494fdf9bfdbf.png)
+
+
+
 <a name="installation"></a>
 
 ## Installation
@@ -177,3 +179,10 @@ GET           | user          |`/message/:id`                    |              
 - stripe
 
 
+<a name="slid"></a>
+
+
+## for more information
+- [ Slides. ](#slid) 
+- [ Deployed App Link. ](#slid)
+- [ Frontend Repo ](https://github.com/MP-Project-Dorrah/client)
