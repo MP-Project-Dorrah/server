@@ -360,6 +360,18 @@ const allRealestateAgents = async (req, res) => {
     });
 };
 
+const oneUser = async (req, res) => {
+  const { _id } = req.params;
+  userModel
+    .find({ _id })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
 module.exports = {
   signUp,
   confirmEmail,
@@ -368,4 +380,5 @@ module.exports = {
   logIn,
   deleteUser,
   allRealestateAgents,
+  oneUser
 };

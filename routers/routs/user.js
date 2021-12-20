@@ -9,6 +9,7 @@ const {
   logIn,
   deleteUser,
   allRealestateAgents,
+  oneUser
 } = require("./../controllers/user");
 
 userRouter.post("/create", signUp);
@@ -18,5 +19,6 @@ userRouter.put("/resetPassword", resetPassword);
 userRouter.post("/log", logIn);
 userRouter.delete("/delete/:_id", deleteUser);
 userRouter.get("/allRealestateAgents", allRealestateAgents); ///////
+userRouter.get("/oneUser/:_id", oneUser);
 
 module.exports = userRouter;
