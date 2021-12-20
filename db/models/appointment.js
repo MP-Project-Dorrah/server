@@ -8,6 +8,4 @@ const appointmentSchema = new mongoose.Schema({
   status: {type: mongoose.Schema.Types.ObjectId, ref: "Status" }, 
 });
 
-
-
 module.exports = mongoose.model("Appointment", appointmentSchema);
