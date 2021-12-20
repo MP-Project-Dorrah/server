@@ -114,7 +114,7 @@ const signUp = async (req, res) => {
           );
       });
     } else {
-      res.status(210).json("you need to insert a password ........");
+      res.status(210).json("you need to insert a complix password");
     }
   }
 };
@@ -169,7 +169,107 @@ const confirmEmail = (req, res) => {
   });
 };
 
+const ForgetPassword = (req, res) => {
+  const { email } = req.body;
+  userModel.findOne({ email }, (err, user) => {
+    if (err || !user) {
+      return res.status(201).send("this user does not exists");
+    }
+    if (!user.isVerified) {
+      return res.status(201).send(" verify your email first ");
+    }
+
+    const token = jwt.sign({ _id: user._id }, process.env.RESET_PASSWORD_KEY, {
+      expiresIn: "60m",
+    });
+
+    const transporter = nodemailer.createTransport(
+      sendgridTransport({
+        auth: {
+          api_key: process.env.ApiKey,
+        },
+      })
+    );
+
+    const mailOptions = {
+      from: "durh1999@gmail.com",
+      to: email,
+      subject: "password reset Link",
+      text:
+        "Hello " +
+        user.username +
+        ",\n\n" +
+        "Please reset your password by using the following code  : " +
+        ",\n\n" +
+        token +
+        "\n\nThank You!\n",
+    };
+
+    return user.updateOne({ resetLink: token }, (err, result) => {
+      if (err) {
+        return res.status(400).send("rest password link error");
+      } else {
+        transporter.sendMail(mailOptions, function (err) {
+          if (err) {
+            return res.status(500).send({
+              msg: "Technical Issue!",
+            });
+          }
+          return res
+            .status(200)
+            .send("A rest password email has been sent to " + user.email);
+        });
+      }
+    });
+  });
+};
+
+const resetPassword = (req, res) => {
+  const { resetLink, newPassword } = req.body;
+  if (
+    newPassword.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/)
+  ) {
+    if (resetLink) {
+      jwt.verify(
+        resetLink,
+        process.env.RESET_PASSWORD_KEY,
+        async (err, result) => {
+          if (err) {
+            return res.status(201).json("token error");
+          }
+          const savePass = await bcrypt.hash(newPassword, SALT);
+          userModel.findOne({ resetLink }, (err, user) => {
+            if (err || !user) {
+              return res
+                .status(201)
+                .json("user with this token does not exists");
+            }
+
+            return user.updateOne(
+              { resetLink: "", password: savePass },
+              (err, resultt) => {
+                if (err) {
+                  return res.status(400).json("error");
+                }
+                return res
+                  .status(200)
+                  .json("your password has been updated successfully");
+              }
+            );
+          });
+        }
+      );
+    } else {
+      return res.status(201).json("authentication error");
+    }
+  } else {
+    res.status(201).json("you need to insert a complix password");
+  }
+};
+
 module.exports = {
   signUp,
-  confirmEmail
+  confirmEmail,
+  ForgetPassword,
+  resetPassword,
 };
