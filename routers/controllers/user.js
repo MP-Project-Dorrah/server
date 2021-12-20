@@ -348,6 +348,18 @@ const deleteUser = async (req, res) => {
     });
 };
 
+const allRealestateAgents = async (req, res) => {
+  //all Real estate agents will show here even if the agent is not available
+  userModel
+    .find({ isDeleted: false, role: "61c05b880cca090670f00825" })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
 module.exports = {
   signUp,
   confirmEmail,
@@ -355,4 +367,5 @@ module.exports = {
   resetPassword,
   logIn,
   deleteUser,
+  allRealestateAgents,
 };
