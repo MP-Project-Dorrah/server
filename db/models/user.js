@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   sellerRateArr: {type: Array },
   realestateAgentRateArr : {},
   Availability : {type: Boolean, default: true}, 
-  realestateAgentCommission : { type: Number, required: true },
+  realestateAgentCommission : { type: Number },
 });
 
 module.exports = mongoose.model("User", userSchema);
