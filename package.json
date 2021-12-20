@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Whether you’re buying, selling, or providing Evaluation Services, this website has something for you. if you want to sell any Property, you can subscribe to this website and start selling, if you are looking for a home you would love to live in, you can discover Properties and take an appointment to see it, if you are an architect, you can provide an evaluation service and get paid for it.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MP-Project-Dorrah/server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MP-Project-Dorrah/server/issues"
+  },
+  "homepage": "https://github.com/MP-Project-Dorrah/server#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
