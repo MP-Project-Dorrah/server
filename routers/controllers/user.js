@@ -267,9 +267,44 @@ const resetPassword = (req, res) => {
   }
 };
 
+const logIn = (req, res) => {
+  const { input, password } = req.body;
+  newInput = input.toLowerCase();
+  userModel
+    .findOne({ $or: [{ email: newInput }, { username: newInput }] })
+    .then(async (result) => {
+      if (result) {
+        if (result.isDeleted) {
+          return res.status(203).json("your account has been deleted");
+        }
+        //unhash password
+        const savePass = await bcrypt.compare(password, result.password);
+        if (savePass) {
+          if (!result.isVerified) {
+            return res.status(203).json("Your Email has not been verified");
+          }
+          const payload = {
+            role: result.role,
+            id: result._id,
+          };
+          const token = await jwt.sign(payload, SECRETKEY);
+          res.status(200).json({ result, token });
+        } else {
+          res.status(206).json("invalid email or password");
+        }
+      } else {
+        res.status(206).json("invalid email or password");
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
 module.exports = {
   signUp,
   confirmEmail,
   ForgetPassword,
   resetPassword,
+  logIn,
 };
