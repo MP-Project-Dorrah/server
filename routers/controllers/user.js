@@ -402,6 +402,59 @@ const newRate = async (req, res) => {
   res.status(200).json("done");
 };
 
+const updateUser = (req, res) => {
+  const { _id, newImg, newUsername, newName, city, phonNumber } = req.body;
+  if (newImg) {
+    userModel
+      .findOneAndUpdate({ _id }, { img: newImg }, { new: true })
+      .then(async (result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else if (newUsername) {
+    const saveUsername = newUsername.toLowerCase();
+    userModel
+      .findOneAndUpdate({ _id }, { username: saveUsername }, { new: true })
+      .then(async (result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else if (newName) {
+    const saveName = newName.toLowerCase();
+    userModel
+      .findOneAndUpdate({ _id }, { name: saveName }, { new: true })
+      .then(async (result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else if (city) {
+    const saveCity = city.toLowerCase();
+    userModel
+      .findOneAndUpdate({ _id }, { city: saveCity }, { new: true })
+      .then(async (result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else if (phonNumber) {
+    userModel
+      .findOneAndUpdate({ _id }, { phonNumber }, { new: true })
+      .then(async (result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  }
+};
+
 module.exports = {
   signUp,
   confirmEmail,
@@ -412,4 +465,5 @@ module.exports = {
   allRealestateAgents,
   oneUser,
   newRate,
+  updateUser,
 };
