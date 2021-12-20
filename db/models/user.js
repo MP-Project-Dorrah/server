@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false },
   resetLink: { data: String, default: "" },
   isSub: { type: Boolean, default: false },
-  sellerRateArr: {type: Array },
-  realestateAgentRateArr : {},
+  sellerRateArr: {type: Array , default:[] },
+  realestateAgentRateArr : {type: Array , default:[]},
   Availability : {type: Boolean, default: true}, 
   realestateAgentCommission : { type: Number },
   isDeleted : { type: Boolean, default: false }

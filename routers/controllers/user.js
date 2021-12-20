@@ -372,6 +372,36 @@ const oneUser = async (req, res) => {
     });
 };
 
+const newRate = async (req, res) => {
+  const { RealestateAgentId, sellerId, RealestateAgentRate, sellerRate } =
+    req.body;
+  // check if the user rate the seller
+  if (sellerId) {
+    const result = await userModel.findOne({ _id: sellerId });
+    if (result) {
+      result.sellerRateArr.push(sellerRate);
+      await result.save();
+    } else {
+      return res.status(404).json("user not found");
+    }
+  }
+  // check if the user rate the Realestate Agent
+  if (RealestateAgentId) {
+    const result = await userModel.findOne({ _id: RealestateAgentId });
+    if (result) {
+      result.realestateAgentRateArr.push(RealestateAgentRate);
+      await result.save();
+    } else {
+      return res.status(404).json("user not found");
+    }
+  }
+  // if the user dosn't want to rate anyone
+  if (!RealestateAgentId && !sellerId) {
+    return res.status(200).json("nothing to add");
+  }
+  res.status(200).json("done");
+};
+
 module.exports = {
   signUp,
   confirmEmail,
@@ -380,5 +410,6 @@ module.exports = {
   logIn,
   deleteUser,
   allRealestateAgents,
-  oneUser
+  oneUser,
+  newRate,
 };
