@@ -1,4 +1,7 @@
 const userModel = require("./../../db/models/user");
+const propertyModel = require("./../../db/models/property");
+const appointmentModel = require("./../../db/models/appointment");
+const interestListModel = require("./../../db/models/interestList");
 
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
@@ -84,7 +87,7 @@ const signUp = async (req, res) => {
         })
       );
       const mailOptions = {
-        from: "durh1999@gmail.com",
+        from: "perfectviewwebsite@gmail.com",
         to: newUserGlopal.email,
         subject: "Account Verification Link",
         text:
@@ -192,7 +195,7 @@ const ForgetPassword = (req, res) => {
     );
 
     const mailOptions = {
-      from: "durh1999@gmail.com",
+      from: "perfectviewwebsite@gmail.com",
       to: email,
       subject: "password reset Link",
       text:
@@ -301,10 +304,55 @@ const logIn = (req, res) => {
     });
 };
 
+const deleteUser = async (req, res) => {
+  const { _id } = req.params;
+  userModel
+    .findById({ _id })
+    .then((result) => {
+      if (result) {
+        if (!result.isDeleted) {
+          userModel.updateOne(
+            { _id },
+            { $set: { isDeleted: true } },
+            function (err) {
+              if (err) return handleError(err);
+            }
+          );
+          appointmentModel.updateMany(
+            { propertyPostedBy: _id },
+            { $set: { isCanceled: true } },
+            function (err) {
+              if (err) return handleError(err);
+            }
+          );
+          propertyModel.updateMany(
+            { postedBy: _id },
+            { $set: { isCanceled: true } },
+            function (err) {
+              if (err) return handleError(err);
+            }
+          );
+          interestListModel.deleteMany({ by: _id }, function (err) {
+            if (err) return handleError(err);
+          });
+
+          return res.status(200).json("done");
+        }
+        return res.status(400).json("this user already have been deleted");
+      } else {
+        return res.status(404).json("user not found");
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
 module.exports = {
   signUp,
   confirmEmail,
   ForgetPassword,
   resetPassword,
   logIn,
+  deleteUser,
 };

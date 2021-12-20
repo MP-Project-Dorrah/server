@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
   realestateAgentRateArr : {},
   Availability : {type: Boolean, default: true}, 
   realestateAgentCommission : { type: Number },
+  isDeleted : { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model("User", userSchema);
