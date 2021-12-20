@@ -9,6 +9,9 @@ require("./db");
 app.use(express.json());
 app.use(cors());
 
+const roleRouter = require("./routers/routs/role");
+app.use("/role", roleRouter);
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
