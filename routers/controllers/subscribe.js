@@ -41,5 +41,19 @@ const payment = async (req, res) => {
   }
 };
 
+const cancelPayment = async (req, res) => {
+  const { userId } = req.body;
+  await userModel
+    .findOneAndUpdate({ _id: userId }, { isSub: false })
+    .catch((err) => {
+      return res.status(400).json(err);
+    });
+  await subscribeModel
+    .findOneAndUpdate({ _id: userId }, { isActive: false })
+    .catch((err) => {
+      return res.status(400).json(err);
+    });
+  res.status(200).json("done");
+};
 
-module.exports = { payment };
+module.exports = { payment, cancelPayment };

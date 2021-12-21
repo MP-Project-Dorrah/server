@@ -21,7 +21,7 @@ app.use("/property", propertyRouter);
 const interestListRouter = require("./routers/routs/interestList");
 app.use("/interestList", interestListRouter);
 
-const subscribeRouter = require("./routers/routs/interestList");
+const subscribeRouter = require("./routers/routs/subscribe");
 app.use("/subscribe", subscribeRouter);
 
 const PORT = process.env.PORT || 5000;
