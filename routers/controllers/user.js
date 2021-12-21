@@ -314,26 +314,26 @@ const deleteUser = async (req, res) => {
           userModel.updateOne(
             { _id },
             { $set: { isDeleted: true } },
-            function (err) {
-              if (err) return handleError(err);
+             (err) =>{
+              if (err) return res.status(400).json(err);
             }
           );
           appointmentModel.updateMany(
             { propertyPostedBy: _id },
             { $set: { isCanceled: true } },
             function (err) {
-              if (err) return handleError(err);
+              if (err) return res.status(400).json(err);
             }
           );
           propertyModel.updateMany(
             { postedBy: _id },
             { $set: { isCanceled: true } },
-            function (err) {
-              if (err) return handleError(err);
+             (err)=> {
+              if (err) return res.status(400).json(err);
             }
           );
-          interestListModel.deleteMany({ by: _id }, function (err) {
-            if (err) return handleError(err);
+          interestListModel.deleteMany({ by: _id },  (err)=> {
+            if (err) return res.status(400).json(err);
           });
 
           return res.status(200).json("done");
@@ -455,6 +455,24 @@ const updateUser = (req, res) => {
   }
 };
 
+//avability toggle
+const avabilityToggle = (req, res) => {
+  const { by } = req.body;
+  userModel.findById({ by }).then((result) => {
+    if (result.Avability) {
+      userModel.updateOne({ by}, { Avability: false },  (err)=> {
+        if (err) return res.status(400).json(err);
+      });
+      res.status(200).json("turn to not available");
+    } else {
+      userModel.updateOne({ _id: by }, { Avability: true },  (err)=> {
+        if (err) return res.status(400).json(err);
+      });
+      res.status(200).json("turn to available");
+    }
+  });
+};
+
 module.exports = {
   signUp,
   confirmEmail,
@@ -466,4 +484,5 @@ module.exports = {
   oneUser,
   newRate,
   updateUser,
+  avabilityToggle,
 };

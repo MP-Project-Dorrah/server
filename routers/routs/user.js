@@ -12,6 +12,7 @@ const {
   oneUser,
   newRate,
   updateUser,
+  avabilityToggle
 } = require("./../controllers/user");
 
 userRouter.post("/create", signUp);
@@ -24,5 +25,8 @@ userRouter.get("/allRealestateAgents", allRealestateAgents);
 userRouter.get("/oneUser/:_id", oneUser);
 userRouter.post("/newRate", newRate);
 userRouter.put("/update", updateUser);
+userRouter.post("/available", avabilityToggle);
+
+
 
 module.exports = userRouter;
