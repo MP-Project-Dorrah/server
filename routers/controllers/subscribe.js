@@ -1,5 +1,6 @@
 const subscribeModel = require("./../../db/models/subscribe");
 const userModel = require("./../../db/models/user");
+const propertyModel = require("./../../db/models/property");
 
 const payment = async (req, res) => {
   let { amount, id, userId } = req.body;
@@ -18,20 +19,27 @@ const payment = async (req, res) => {
     });
 
     await userModel.findOneAndUpdate({ _id: userId }, { isSub: true });
-
-    const newSubscribe = new subscribeModel({
-      seller: userId,
-      amount,
-    });
-
-    newSubscribe
-      .save()
-      .then((result) => {
-        res.status(201).json(result);
-      })
-      .catch((err) => {
-        res.status(400).json(err);
+    const resultt = await subscribeModel.findOne({ seller: userId });
+    if (resultt) {
+      await subscribeModel.findOneAndUpdate(
+        { seller: userId },
+        { isActive: true, startDate: new Date(), endDate: new Date() + 30 }
+      );
+    } else {
+      const newSubscribe = new subscribeModel({
+        seller: userId,
+        amount,
       });
+
+      newSubscribe
+        .save()
+        .then((result) => {
+          res.status(201).json(result);
+        })
+        .catch((err) => {
+          res.status(400).json(err);
+        });
+    }
   } catch (error) {
     console.log("Error", error);
     res.json({
@@ -49,11 +57,28 @@ const cancelPayment = async (req, res) => {
       return res.status(400).json(err);
     });
   await subscribeModel
-    .findOneAndUpdate({ _id: userId }, { isActive: false })
+    .findOneAndUpdate({ seller: userId }, { isActive: false })
+    .catch((err) => {
+      return res.status(400).json(err);
+    });
+  await propertyModel
+    .findOneAndUpdate({ postedBy: userId }, { isSellerSub: false })
     .catch((err) => {
       return res.status(400).json(err);
     });
   res.status(200).json("done");
 };
 
-module.exports = { payment, cancelPayment };
+const getOneSubscribe = (req, res) => {
+  const { userId } = req.params;
+  subscribeModel
+    .find({ seller: userId })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
+module.exports = { payment, cancelPayment, getOneSubscribe };
