@@ -11,4 +11,37 @@ const getAllProperty = async (req, res) => {
     });
 };
 
-module.exports = { getAllProperty };
+const createProperty = (req, res) => {
+  const {
+    imgArr,
+    name,
+    price,
+    city,
+    location,
+    describe,
+    postedBy,
+    propertyHighlights,
+  } = req.body;
+  const newProperty = new propertyModel({
+    imgArr,
+    name,
+    city,
+    price,
+    location,
+    describe,
+    postedBy,
+    propertyHighlights,
+  });
+
+  newProperty
+    .save()
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+
+
+module.exports = { getAllProperty, createProperty};
