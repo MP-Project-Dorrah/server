@@ -1,4 +1,6 @@
 const propertyModel = require("./../../db/models/property");
+const appointmentModel = require("./../../db/models/appointment");
+const interestListModel = require("./../../db/models/interestList");
 
 const getAllProperty = async (req, res) => {
   propertyModel
@@ -53,7 +55,7 @@ const deleteProperty = async (req, res) => {
       });
       appointmentModel.updateMany(
         { onProperty: _id },
-        { isCanceled: true  },
+        { isCanceled: true },
         function (err) {
           if (err) return res.status(400).json(err);
         }
@@ -69,4 +71,21 @@ const deleteProperty = async (req, res) => {
     });
 };
 
-module.exports = { getAllProperty, deleteProperty  , createProperty};
+const oneProperty = async (req, res) => {
+  const { _id } = req.params;
+  propertyModel
+    .find({ _id })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
+module.exports = {
+  getAllProperty,
+  deleteProperty,
+  createProperty,
+  oneProperty,
+};
