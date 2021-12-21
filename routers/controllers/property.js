@@ -108,7 +108,8 @@ const searchProperty = async (req, res) => {
 
   if (result) {
     console.log(result);
-    if (result[0].price < maxPrice && result[0].price > minPrice) { //sort price 
+    if (result[0].price < maxPrice && result[0].price > minPrice) {
+      //sort price
       res.status(200).json(result);
     } else {
       res.status(200).json("nothing");
@@ -118,6 +119,19 @@ const searchProperty = async (req, res) => {
   }
 };
 
+const mapSortProperty = async (req, res) => {
+  const { map, sortBy } = req.body;
+  const newMap = map.slice(map.indexOf("@") + 1);
+  const newMapSort = `https://www.google.co.in/maps/search/${sortBy}/@${newMap}`;
+  res.status(200).json(newMapSort);
+};
+// sort
+// https://www.google.co.in/maps/search/bank/@26.3391232,43.7617704,15z/data=!3m1!4b1?hl=en
+//user
+// https://www.google.co.in/maps/@26.3391232,43.7617704,15z/data=!3m1!4b1?hl=en
+// or
+// https://www.google.co.in/maps/place/Alhbas+Company/@26.0585439,43.4906239,13z/data=!4m13!1m7!3m6!1s0x158239c8dd7b86c9:0x6aaae76e5ab9eefa!2sRiyadh+Al+Khabra!3b1!8m2!3d26.0533267!4d43.5414667!3m4!1s0x1582377697faca5f:0x249f214b73aeb8bc!8m2!3d26.0267162!4d43.5258093?hl=en
+
 module.exports = {
   getAllProperty,
   deleteProperty,
@@ -125,4 +139,5 @@ module.exports = {
   oneProperty,
   getUserProperty,
   searchProperty,
+  mapSortProperty,
 };
