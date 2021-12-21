@@ -18,6 +18,9 @@ app.use("/user", userRouter);
 const propertyRouter = require("./routers/routs/property");
 app.use("/property", propertyRouter);
 
+const interestListRouter = require("./routers/routs/interestList");
+app.use("/interestList", interestListRouter);
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
