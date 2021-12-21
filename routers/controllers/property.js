@@ -83,9 +83,46 @@ const oneProperty = async (req, res) => {
     });
 };
 
+const getUserProperty = (req, res) => {
+  const { postedBy } = req.params;
+  propertyModel
+    .find({})
+    .populate("postedBy")
+    .where("postedBy")
+    .equals(postedBy)
+    .sort({ date: -1 })
+    .exec((err, porperty) => {
+      if (err) return handleError(err);
+      res.json(porperty);
+    });
+};
+
+const searchProperty = async (req, res) => {
+  const { name, maxPrice, minPrice } = req.body;
+  const result = await propertyModel.find({
+    $or: [
+      { city: { $regex: new RegExp(name) } },
+      { name: { $regex: new RegExp(name) } },
+    ],
+  }); // search bar > search on city or name
+
+  if (result) {
+    console.log(result);
+    if (result[0].price < maxPrice && result[0].price > minPrice) { //sort price 
+      res.status(200).json(result);
+    } else {
+      res.status(200).json("nothing");
+    }
+  } else {
+    res.status(200).json("nothing hhhhh");
+  }
+};
+
 module.exports = {
   getAllProperty,
   deleteProperty,
   createProperty,
   oneProperty,
+  getUserProperty,
+  searchProperty,
 };
