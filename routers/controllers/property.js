@@ -83,9 +83,24 @@ const oneProperty = async (req, res) => {
     });
 };
 
+const getUserProperty = (req, res) => {
+  const { postedBy } = req.params;
+  propertyModel
+    .find({})
+    .populate("postedBy")
+    .where("postedBy")
+    .equals(postedBy)
+    .sort({ date: -1 })
+    .exec((err, porperty) => {
+      if (err) return handleError(err);
+      res.json(porperty);
+    });
+};
+
 module.exports = {
   getAllProperty,
   deleteProperty,
   createProperty,
   oneProperty,
+  getUserProperty,
 };
