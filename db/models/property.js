@@ -7,7 +7,7 @@ const propertySchema = new mongoose.Schema({
   location : {type: String, required: true},
   describe: { type: String, required: true },
   isDeleted: { type: Boolean , default: false},
-  date : {type: date , default: new Date()},
+  date : {type: Date , default: new Date()},
   postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   propertyHighlights: {type: Object, required: true},
 });
