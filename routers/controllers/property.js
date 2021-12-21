@@ -43,5 +43,30 @@ const createProperty = (req, res) => {
     });
 };
 
+const deleteProperty = async (req, res) => {
+  const { _id } = req.body;
+  propertyModel
+    .findById({ _id })
+    .then((result) => {
+      propertyModel.updateOne({ _id }, { isDeleted: true }, (err) => {
+        if (err) return res.status(400).json(err);
+      });
+      appointmentModel.updateMany(
+        { onProperty: _id },
+        { isCanceled: true  },
+        function (err) {
+          if (err) return res.status(400).json(err);
+        }
+      );
+      interestListModel.deleteMany({ onProperty: _id }, (err) => {
+        if (err) return res.status(400).json(err);
+      });
 
-module.exports = { getAllProperty, createProperty};
+      return res.status(200).json("done");
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
+module.exports = { getAllProperty, deleteProperty  , createProperty};
