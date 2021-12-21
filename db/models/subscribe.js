@@ -5,7 +5,7 @@ const subscribeSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
   startDate: { type: Date, default: new Date() },
   endDate: { type: Date, default: new Date() + 30 },
-  isCanceled: { type: Boolean, default: false },
+  isActive: { type: Boolean, default: true },
 });
 
 module.exports = mongoose.model("Subscribe", subscribeSchema);
