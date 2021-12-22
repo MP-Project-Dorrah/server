@@ -24,6 +24,9 @@ app.use("/interestList", interestListRouter);
 const subscribeRouter = require("./routers/routs/subscribe");
 app.use("/subscribe", subscribeRouter);
 
+const appointmentRouter = require("./routers/routs/appointment");
+app.use("/appointment", appointmentRouter);
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
