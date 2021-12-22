@@ -39,4 +39,19 @@ const createAppointment = (req, res) => {
   }
 };
 
-module.exports = { createAppointment };
+const cancelAppointment = (req, res) => {
+  const { _id } = req.body;
+  appointmentModel.findById({ _id }).then((result) => {
+    appointmentModel.updateOne(
+      { _id },
+      { isCanceled: true },
+      { new: true },
+      (err) => {
+        if (err) return res.status(400).json(err);
+      }
+    );
+    res.status(200).json(result);
+  });
+};
+
+module.exports = { createAppointment, cancelAppointment };
