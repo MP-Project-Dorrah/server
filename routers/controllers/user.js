@@ -23,7 +23,6 @@ const signUp = async (req, res) => {
     city,
     phonNumber,
     nationalId,
-    img,
     realestateAgentCommission,
     role,
   } = req.body;
@@ -55,7 +54,6 @@ const signUp = async (req, res) => {
           role,
           phonNumber,
           nationalId,
-          img,
         });
         newUserGlopal = await newUser.save();
       } else if (role == "61c05b880cca090670f00825") {
@@ -69,7 +67,6 @@ const signUp = async (req, res) => {
           role,
           phonNumber,
           nationalId,
-          img,
           realestateAgentCommission,
         });
         newUserGlopal = await newUser.save();
@@ -347,7 +344,23 @@ const deleteUser = async (req, res) => {
 const allRealestateAgents = async (req, res) => {
   //all Real estate agents will show here even if the agent is not available
   userModel
-    .find({ isDeleted: false, role: "61c05b880cca090670f00825" })
+    .find({ isVerified: true, isDeleted: false, role: "61c05b880cca090670f00825" })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+const availableRealestateAgents = (req, res) => {
+  const { city } = req.params;
+   userModel
+    .find({
+      isDeleted: false,
+      role: "61c05b880cca090670f00825",
+      Availability: true,
+      city
+    })
     .then((result) => {
       res.status(200).json(result);
     })
@@ -481,4 +494,5 @@ module.exports = {
   newRate,
   updateUser,
   avabilityToggle,
+  availableRealestateAgents
 };

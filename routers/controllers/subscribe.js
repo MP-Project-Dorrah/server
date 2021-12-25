@@ -1,6 +1,7 @@
 const subscribeModel = require("./../../db/models/subscribe");
 const userModel = require("./../../db/models/user");
 const propertyModel = require("./../../db/models/property");
+const stripe = require("stripe")(process.env.KEY);
 
 const payment = async (req, res) => {
   let { amount, id, userId } = req.body;
@@ -12,18 +13,12 @@ const payment = async (req, res) => {
       payment_method: id,
       confirm: true,
     });
-
-    res.json({
-      message: "Payment successful",
-      success: true,
-    });
-
     await userModel.findOneAndUpdate({ _id: userId }, { isSub: true });
     const resultt = await subscribeModel.findOne({ seller: userId });
     if (resultt) {
       await subscribeModel.findOneAndUpdate(
         { seller: userId },
-        { isActive: true, startDate: new Date(), endDate: new Date() + 30 }
+        { isActive: true, startDate: new Date().getDate() + 30 , endDate: new Date()}
       );
     } else {
       const newSubscribe = new subscribeModel({
@@ -31,15 +26,13 @@ const payment = async (req, res) => {
         amount,
       });
 
-      newSubscribe
-        .save()
-        .then((result) => {
-          res.status(201).json(result);
-        })
-        .catch((err) => {
-          res.status(400).json(err);
-        });
+      newSubscribe.save().exec();
     }
+
+    res.json({
+      message: "Payment successful",
+      success: true,
+    });
   } catch (error) {
     console.log("Error", error);
     res.json({

@@ -1,9 +1,12 @@
 const express = require("express");
-const { likeProperty, checkLike } = require("./../controllers/interestList");
+const authentication = require("./../middleWhere/authentication");
+
+const { likeProperty, checkLike , userLikes} = require("./../controllers/interestList");
 
 const interestListRouter = express.Router();
 
-interestListRouter.post("/", likeProperty);
-interestListRouter.get("/:onPost", checkLike);
+interestListRouter.post("/likeToggle",authentication, likeProperty);
+interestListRouter.get("/check/:onProperty",authentication ,  checkLike);
+interestListRouter.get("/userLikes/:by", userLikes);
 
 module.exports = interestListRouter;

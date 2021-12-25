@@ -5,6 +5,6 @@ const { payment, cancelPayment  , getOneSubscribe} = require("./../controllers/s
 
 subscribeRouter.post("/payment", payment);
 subscribeRouter.put("/delete", cancelPayment);
-subscribeRouter.get("/:userId", getOneSubscribe);
+subscribeRouter.get("/:userId", getOneSubscribe); /////
 
 module.exports = subscribeRouter;

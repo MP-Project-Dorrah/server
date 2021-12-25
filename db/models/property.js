@@ -5,7 +5,7 @@ const propertySchema = new mongoose.Schema({
   imgArr : { type: Array, required: true},
   price: { type: Number, required: true },
   city: { type: String, required: true },
-  location : {type: String, required: true},
+  location : {type: String , default:""}, ///////requ
   describe: { type: String, required: true },
   isDeleted: { type: Boolean , default: false},
   isSellerSub: { type: Boolean , default: false}, 

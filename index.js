@@ -27,6 +27,9 @@ app.use("/subscribe", subscribeRouter);
 const appointmentRouter = require("./routers/routs/appointment");
 app.use("/appointment", appointmentRouter);
 
+const roomRouter = require("./routers/routs/room");
+app.use("/room", roomRouter);
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
