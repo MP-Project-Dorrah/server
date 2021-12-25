@@ -27,9 +27,10 @@ const likeProperty = (req, res) => {
 };
 
 const checkLike = (req, res) => {
-  const { by, onProperty } = req.params;
-  likesModel
-    .findOne({ by, onProperty })
+  const { onProperty } = req.params;
+  console.log(req.token.id);
+  interestListModel
+    .findOne({  by: req.token.id, onProperty })
     .then((result) => {
       if (result) {
         res.status(201).json("its liked");
@@ -42,4 +43,19 @@ const checkLike = (req, res) => {
     });
 };
 
-module.exports = { likeProperty, checkLike };
+const userLikes = (req, res) => {
+  const { by } = req.params;
+  interestListModel
+    .find({})
+    .populate("onProperty")
+    .where("by")
+    .equals(by)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+
+module.exports = { likeProperty, checkLike  , userLikes};

@@ -6,7 +6,7 @@ const appointmentSchema = new mongoose.Schema({
   // propertyPostedBy: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
   realestateAgent : {type: mongoose.Schema.Types.ObjectId, ref: "User"}, 
   date : {type: String , required: true} , 
-  isCanceled : {type: Boolean , default: false},
+  isCanceled : {type: Boolean , default: false}, //canceled By
   type : {type: String , required:true}, // video call or in person
 });
 

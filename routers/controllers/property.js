@@ -75,6 +75,7 @@ const oneProperty = async (req, res) => {
   const { _id } = req.params;
   propertyModel
     .find({ _id })
+    .populate("postedBy")
     .then((result) => {
       res.status(200).json(result);
     })
@@ -86,7 +87,7 @@ const oneProperty = async (req, res) => {
 const getUserProperty = (req, res) => {
   const { postedBy } = req.params;
   propertyModel
-    .find({})
+    .find({isDeleted: false})
     .populate("postedBy")
     .where("postedBy")
     .equals(postedBy)
@@ -99,23 +100,25 @@ const getUserProperty = (req, res) => {
 
 const searchProperty = async (req, res) => {
   const { name, maxPrice, minPrice } = req.body;
-  const result = await propertyModel.find({
+  const saveName = name.toLowerCase();
+
+  const result = await propertyModel.find({ isDeleted: false ,
     $or: [
-      { city: { $regex: new RegExp(name) } },
-      { name: { $regex: new RegExp(name) } },
+      { city: { $regex: new RegExp(saveName) } },
+      { name: { $regex: new RegExp(saveName) } },
     ],
   }); // search bar > search on city or name
-
-  if (result) {
-    console.log(result);
-    if (result[0].price < maxPrice && result[0].price > minPrice) {
-      //sort price
-      res.status(200).json(result);
-    } else {
-      res.status(200).json("nothing");
-    }
+  console.log(result);
+  let newArr = [];
+  if (result.length) {
+    result.map((ele) => {
+      if (ele.price < maxPrice && ele.price > minPrice) {
+        newArr.push(ele);
+      }
+    });
+    res.status(200).json(newArr);
   } else {
-    res.status(200).json("nothing hhhhh");
+    res.status(200).json("");
   }
 };
 
