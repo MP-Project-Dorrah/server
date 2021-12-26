@@ -344,7 +344,11 @@ const deleteUser = async (req, res) => {
 const allRealestateAgents = async (req, res) => {
   //all Real estate agents will show here even if the agent is not available
   userModel
-    .find({ isVerified: true, isDeleted: false, role: "61c05b880cca090670f00825" })
+    .find({
+      isVerified: true,
+      isDeleted: false,
+      role: "61c05b880cca090670f00825",
+    })
     .then((result) => {
       res.status(200).json(result);
     })
@@ -354,12 +358,12 @@ const allRealestateAgents = async (req, res) => {
 };
 const availableRealestateAgents = (req, res) => {
   const { city } = req.params;
-   userModel
+  userModel
     .find({
       isDeleted: false,
       role: "61c05b880cca090670f00825",
       Availability: true,
-      city
+      city,
     })
     .then((result) => {
       res.status(200).json(result);
@@ -411,63 +415,68 @@ const newRate = async (req, res) => {
   res.status(200).json("done");
 };
 
-const updateUser = (req, res) => {
-  const { _id, newImg, newUsername, newName, city, phonNumber } = req.body;
-  if (newImg) {
-    userModel
-      .findOneAndUpdate({ _id }, { img: newImg }, { new: true })
-      .then(async (result) => {
-        res.status(200).json(result);
-      })
+const updateUser = async (req, res) => { //cant set header....
+  const { _id, newImg, newUsername, newName, city, phonNumber, email } =
+    req.body;
+  if (email) {
+    const saveEmail = email.toLowerCase();
+    await userModel
+      .findOneAndUpdate({ _id }, { email: saveEmail }, { new: true })
       .catch((err) => {
-        res.status(400).json(err);
-      });
-  } else if (newUsername) {
-    const saveUsername = newUsername.toLowerCase();
-    userModel
-      .findOneAndUpdate({ _id }, { username: saveUsername }, { new: true })
-      .then(async (result) => {
-        res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(400).json(err);
-      });
-  } else if (newName) {
-    const saveName = newName.toLowerCase();
-    userModel
-      .findOneAndUpdate({ _id }, { name: saveName }, { new: true })
-      .then(async (result) => {
-        res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(400).json(err);
-      });
-  } else if (city) {
-    const saveCity = city.toLowerCase();
-    userModel
-      .findOneAndUpdate({ _id }, { city: saveCity }, { new: true })
-      .then(async (result) => {
-        res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(400).json(err);
-      });
-  } else if (phonNumber) {
-    userModel
-      .findOneAndUpdate({ _id }, { phonNumber }, { new: true })
-      .then(async (result) => {
-        res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(400).json(err);
+        if (err) {
+          return res.status(201).json(err);
+        }
       });
   }
+  if (newUsername) {
+    const saveUsername = newUsername.toLowerCase();
+    await userModel
+      .findOneAndUpdate({ _id }, { username: saveUsername }, { new: true })
+      .catch((err) => {
+        if (err) return res.status(400).json(err);
+      });
+  }
+  if (newName) {
+    const saveName = newName.toLowerCase();
+    await userModel
+      .findOneAndUpdate({ _id }, { name: saveName }, { new: true })
+      .catch((err) => {
+        if (err) return res.status(400).json(err);
+      });
+  }
+  if (city) {
+    const saveCity = city.toLowerCase();
+    await userModel
+      .findOneAndUpdate({ _id }, { city: saveCity }, { new: true })
+      .catch((err) => {
+        if (err) return res.status(400).json(err);
+      });
+  }
+  if (phonNumber) {
+    await userModel
+      .findOneAndUpdate({ _id }, { phonNumber }, { new: true })
+      .catch((err) => {
+        if (err) return res.status(400).json(err);
+      });
+  }
+  res.status(200).json("done");
+};
+
+const updateUserImg = (req, res) => {
+  const { _id, newImg } = req.body; //_id: post id
+  userModel
+    .findOneAndUpdate({ _id }, { img: newImg }, { new: true })
+    .then(async (result) => {
+      console.log(result);
+      res.status(200).json(result);
+    });
 };
 
 //avability toggle
 const avabilityToggle = (req, res) => {
   const { by } = req.body;
   userModel.findById(by).then((result) => {
+    console.log(result, "hereee");
     if (result.Availability) {
       userModel.updateOne({ _id: by }, { Availability: false }, (err) => {
         if (err) return res.status(400).json(err);
@@ -480,6 +489,16 @@ const avabilityToggle = (req, res) => {
       res.status(200).json("turn to available");
     }
   });
+};
+const allUsers = async (req, res) => {
+  userModel
+    .find({ isDeleted: false })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
 module.exports = {
@@ -494,5 +513,7 @@ module.exports = {
   newRate,
   updateUser,
   avabilityToggle,
-  availableRealestateAgents
+  availableRealestateAgents,
+  allUsers,
+  updateUserImg
 };
