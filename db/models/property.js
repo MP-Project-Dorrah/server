@@ -8,7 +8,7 @@ const propertySchema = new mongoose.Schema({
   location : {type: String , default:""}, ///////requ
   describe: { type: String, required: true },
   isDeleted: { type: Boolean , default: false},
-  isSellerSub: { type: Boolean , default: false}, 
+  isSellerSub: { type: Boolean , default: true}, 
   date : {type: Date , default: new Date()},
   postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   propertyHighlights: {type: Object, required: true},

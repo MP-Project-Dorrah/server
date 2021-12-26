@@ -1,4 +1,93 @@
 const appointmentModel = require("./../../db/models/appointment");
+const userModel = require("./../../db/models/user");
+const nodemailer = require("nodemailer");
+const sendgridTransport = require("nodemailer-sendgrid-transport");
+require("dotenv").config();
+
+const sendAppointmentMessage = async (req, res) => {
+  const { sellerId, AgentId, buyerNumber, PropertyLocation, type, date } =
+    req.body;
+
+  const result1 = await userModel.findById(sellerId);
+
+  if (result1) {
+    console.log(result1, "result1");
+    const transporter = nodemailer.createTransport(
+      sendgridTransport({
+        auth: {
+          api_key: process.env.ApiKey,
+        },
+      })
+    );
+    // console.log(result1, "result1");
+    const mailOptions = {
+      from: "perfectviewwebsite@gmail.com",
+      to: result1.email,
+      subject: "New Appointment",
+      text:
+        "Hello " +
+        result1.username +
+        ",\n\n" +
+        "you have an appointment at : " +
+        date +
+        " - " +
+        type +
+        ",\n\n" +
+        "in this location :" +
+        PropertyLocation +
+        "\n\nThank You!\n" +
+        " Buyer Number : " +
+        buyerNumber,
+    };
+
+    transporter.sendMail(mailOptions, (err) => {
+      if (err) {
+        return res.status(500).json(err);
+      }
+    });
+  }
+  if (AgentId) {
+    const result2 = await userModel.findById(AgentId);
+    if (result2) {
+      console.log(result2, "result2");
+      const transporter = nodemailer.createTransport(
+        sendgridTransport({
+          auth: {
+            api_key: process.env.ApiKey,
+          },
+        })
+      );
+      const mailOptions = {
+        from: "perfectviewwebsite@gmail.com",
+        to: result2.email,
+        subject: "New Appointment",
+        text:
+          "Hello " +
+          result2.username +
+          ",\n\n" +
+          "you have an appointment at : " +
+          date +
+          " - " +
+          type +
+          ",\n\n" +
+          "at this location :" +
+          PropertyLocation +
+          "\n\nThank You!\n" +
+          " Buyer Number : " +
+          buyerNumber,
+      };
+
+      transporter.sendMail(mailOptions, (err) => {
+        if (err) {
+          return res.status(500).json(err);
+        }
+        return res.status(200).json("done");
+      });
+    }
+  } else {
+    res.status(200).json("done");
+  }
+};
 
 const createAppointment = (req, res) => {
   const { client, onProperty, propertyPostedBy, realestateAgent, type, date } =
@@ -88,4 +177,9 @@ const getUserAppointments = async (req, res) => {
   }
 };
 
-module.exports = { createAppointment, cancelAppointment, getUserAppointments };
+module.exports = {
+  createAppointment,
+  cancelAppointment,
+  getUserAppointments,
+  sendAppointmentMessage,
+};
