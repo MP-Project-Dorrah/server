@@ -87,7 +87,7 @@ const oneProperty = async (req, res) => {
 const getUserProperty = (req, res) => {
   const { postedBy } = req.params;
   propertyModel
-    .find({isDeleted: false})
+    .find({ isDeleted: false })
     .populate("postedBy")
     .where("postedBy")
     .equals(postedBy)
@@ -102,7 +102,8 @@ const searchProperty = async (req, res) => {
   const { name, maxPrice, minPrice } = req.body;
   const saveName = name.toLowerCase();
 
-  const result = await propertyModel.find({ isDeleted: false ,
+  const result = await propertyModel.find({
+    isDeleted: false,
     $or: [
       { city: { $regex: new RegExp(saveName) } },
       { name: { $regex: new RegExp(saveName) } },
