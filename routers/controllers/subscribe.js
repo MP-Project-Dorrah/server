@@ -20,6 +20,11 @@ const payment = async (req, res) => {
         { seller: userId },
         { isActive: true, startDate: new Date().getDate() + 30 , endDate: new Date()}
       );
+      await propertyModel
+      .findOneAndUpdate({ postedBy: userId }, { isSellerSub: true })
+      .catch((err) => {
+        return res.status(400).json(err);
+      });
     } else {
       const newSubscribe = new subscribeModel({
         seller: userId,
@@ -28,7 +33,6 @@ const payment = async (req, res) => {
 
       newSubscribe.save().exec();
     }
-
     res.json({
       message: "Payment successful",
       success: true,
