@@ -320,7 +320,7 @@ const deleteUser = async (req, res) => {
           );
           propertyModel.updateMany(
             { postedBy: _id },
-            { $set: { isCanceled: true } },
+            { $set: { isDeleted: true } },
             (err) => {
               if (err) return res.status(400).json(err);
             }
@@ -415,7 +415,8 @@ const newRate = async (req, res) => {
   res.status(200).json("done");
 };
 
-const updateUser = async (req, res) => { //cant set header....
+const updateUser = async (req, res) => {
+  //cant set header....
   const { _id, newImg, newUsername, newName, city, phonNumber, email } =
     req.body;
   if (email) {
@@ -515,5 +516,5 @@ module.exports = {
   avabilityToggle,
   availableRealestateAgents,
   allUsers,
-  updateUserImg
+  updateUserImg,
 };

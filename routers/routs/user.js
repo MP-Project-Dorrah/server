@@ -26,13 +26,13 @@ userRouter.put("/forgetPassword", ForgetPassword);
 userRouter.put("/resetPassword", resetPassword);
 userRouter.put("/updateImg", authentication, updateUserImg);
 userRouter.post("/log", logIn);
-userRouter.delete("/delete/:_id", deleteUser);
+userRouter.delete("/delete/:_id", authentication, deleteUser);
 userRouter.get("/allRealestateAgents", allRealestateAgents);
 userRouter.get("/allRealestateAgents/:city", availableRealestateAgents);
 userRouter.get("/oneUser/:_id", oneUser);
-userRouter.post("/newRate", newRate);
-userRouter.put("/update", updateUser);
-userRouter.post("/available", avabilityToggle);
+userRouter.post("/newRate", authentication, newRate);
+userRouter.put("/update", authentication, updateUser);
+userRouter.post("/available", authentication, avabilityToggle);
 userRouter.get("/all", authentication, authorization, allUsers);
 
 module.exports = userRouter;
