@@ -1,10 +1,15 @@
 const express = require("express");
 const subscribeRouter = express.Router();
+const authentication = require("./../middleWhere/authentication");
 
-const { payment, cancelPayment  , getOneSubscribe} = require("./../controllers/subscribe");
+const {
+  payment,
+  cancelPayment,
+  getOneSubscribe,
+} = require("./../controllers/subscribe");
 
-subscribeRouter.post("/payment", payment);
-subscribeRouter.put("/delete", cancelPayment);
-subscribeRouter.get("/:userId", getOneSubscribe); /////
+subscribeRouter.post("/payment", authentication, payment);
+subscribeRouter.put("/delete", authentication, cancelPayment);
+subscribeRouter.get("/:userId", authentication, getOneSubscribe); /////
 
 module.exports = subscribeRouter;

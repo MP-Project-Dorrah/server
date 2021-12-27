@@ -4,7 +4,7 @@ const interestListModel = require("./../../db/models/interestList");
 
 const getAllProperty = async (req, res) => {
   propertyModel
-    .find({ isDeleted: false })
+    .find({ isDeleted: false, isSellerSub: true })
     .then((result) => {
       res.status(200).json(result);
     })
@@ -104,6 +104,7 @@ const searchProperty = async (req, res) => {
 
   const result = await propertyModel.find({
     isDeleted: false,
+    isSellerSub: true,
     $or: [
       { city: { $regex: new RegExp(saveName) } },
       { name: { $regex: new RegExp(saveName) } },
