@@ -235,14 +235,14 @@ const resetPassword = (req, res) => {
         process.env.RESET_PASSWORD_KEY,
         async (err, result) => {
           if (err) {
-            return res.status(201).json("token error");
+            return res.status(201).json(" wrong code ");
           }
           const savePass = await bcrypt.hash(newPassword, SALT);
           userModel.findOne({ resetLink }, (err, user) => {
             if (err || !user) {
               return res
                 .status(201)
-                .json("user with this token does not exists");
+                .json("oops! something went wrong, try again ");
             }
 
             return user.updateOne(
@@ -417,7 +417,7 @@ const newRate = async (req, res) => {
 
 const updateUser = async (req, res) => {
   //cant set header....
-  const { _id, newImg, newUsername, newName, city, phonNumber, email } =
+  const { _id, newUsername, newName, city, phonNumber, email } =
     req.body;
   if (email) {
     const saveEmail = email.toLowerCase();

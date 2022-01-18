@@ -1,6 +1,7 @@
 const propertyModel = require("./../../db/models/property");
 const appointmentModel = require("./../../db/models/appointment");
 const interestListModel = require("./../../db/models/interestList");
+const axios = require("axios");
 
 const getAllProperty = async (req, res) => {
   propertyModel
@@ -24,6 +25,7 @@ const createProperty = (req, res) => {
     postedBy,
     propertyHighlights,
   } = req.body;
+  console.log(imgArr);
   const newProperty = new propertyModel({
     imgArr,
     name,
@@ -110,7 +112,7 @@ const searchProperty = async (req, res) => {
       { name: { $regex: new RegExp(saveName) } },
     ],
   }); // search bar > search on city or name
-  console.log(result);
+  // console.log(result);
   let newArr = [];
   if (result.length) {
     result.map((ele) => {
@@ -125,11 +127,24 @@ const searchProperty = async (req, res) => {
 };
 
 const mapSortProperty = async (req, res) => {
+  const { lat, lng, sortBy } = req.body;
+  // const restaurant = "restaurant"
+  const newMapSort = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=20000&type=${sortBy}&keyword=cruise&key=AIzaSyC4JqBOR-km_LYFHF1rW7fWG-vrholjOZQ`;
+  const result = await axios.get(newMapSort);
+  // console.log(result.data);
+  res.status(200).json(result.data);
+};
+
+const mapSortProperty2 = async (req, res) => {
   const { map, sortBy } = req.body;
   const newMap = map.slice(map.indexOf("@") + 1);
   const newMapSort = `https://www.google.co.in/maps/search/${sortBy}/@${newMap}`;
   res.status(200).json(newMapSort);
+  console.log(
+    map.slice(props.location.indexOf("@") + 1, props.location.indexOf(","))
+  );
 };
+
 // sort
 // https://www.google.co.in/maps/search/bank/@26.3391232,43.7617704,15z/data=!3m1!4b1?hl=en
 //user
@@ -145,4 +160,5 @@ module.exports = {
   getUserProperty,
   searchProperty,
   mapSortProperty,
+  mapSortProperty2,
 };

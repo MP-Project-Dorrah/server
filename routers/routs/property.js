@@ -10,6 +10,7 @@ const {
   getUserProperty,
   searchProperty,
   mapSortProperty,
+  mapSortProperty2
 } = require("../controllers/property");
 
 propertyRouter.get("/", getAllProperty);
@@ -19,5 +20,7 @@ propertyRouter.get("/oneProperty/:_id", oneProperty);
 propertyRouter.get("/userProperty/:postedBy", getUserProperty);
 propertyRouter.post("/searchProperty", searchProperty);
 propertyRouter.post("/mapSort", mapSortProperty);
+propertyRouter.post("/mapSort2", mapSortProperty2);
+
 
 module.exports = propertyRouter;

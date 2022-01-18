@@ -3,6 +3,7 @@ const userModel = require("./../../db/models/user");
 const propertyModel = require("./../../db/models/property");
 const stripe = require("stripe")(process.env.KEY);
 const cron = require("node-cron");
+const schedule = require("node-schedule");
 
 // "0 0 26 */1 *"
 
@@ -103,26 +104,26 @@ const cancelPayment = async (req, res) => {
     .catch((err) => {
       return res.status(400).json(err);
     });
-
-  //   cron.schedule("*/1 * * * *", async () => {
-  //     await userModel
-  //     .findOneAndUpdate({ _id: userId }, { subscribeStatus: "unActive" })
-  //     .catch((err) => {
-  //       return res.status(400).json(err);
-  //     });
-  //   await subscribeModel
-  //     .findOneAndUpdate({ seller: userId }, { isActive: false })
-  //     .catch((err) => {
-  //       return res.status(400).json(err);
-  //     });
-  //   await propertyModel
-  //     .updateMany({ postedBy: userId }, { isSellerSub: false })
-  //     .catch((err) => {
-  //       return res.status(400).json(err);
-  //     });
-  // console.log("caneled succc");
-
-  //   })
+  const resulttt = await subscribeModel.findOne({ seller: userId });
+  const date = resulttt.endDate;
+  schedule.scheduleJob(date, async () => {
+    await userModel
+      .findOneAndUpdate({ _id: userId }, { subscribeStatus: "unActive" })
+      .catch((err) => {
+        return res.status(400).json(err);
+      });
+    await subscribeModel
+      .findOneAndUpdate({ seller: userId }, { isActive: false })
+      .catch((err) => {
+        return res.status(400).json(err);
+      });
+    await propertyModel
+      .updateMany({ postedBy: userId }, { isSellerSub: false })
+      .catch((err) => {
+        return res.status(400).json(err);
+      });
+    console.log("caneled succc");
+  });
   res.status(200).json("done");
 };
 
