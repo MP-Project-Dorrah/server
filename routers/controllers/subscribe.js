@@ -5,14 +5,10 @@ const stripe = require("stripe")(process.env.KEY);
 const cron = require("node-cron");
 const schedule = require("node-schedule");
 
-// "0 0 26 */1 *"
-
 const payment = async (req, res) => {
   let { amount, id, userId, startDate, endDate, paymentMethod } = req.body;
   const day = startDate.toString().slice(5, 7);
-  // console.log(paymentMethod.card.exp_year);
-  // console.log(paymentMethod.card.exp_month);
-  // console.log(day);
+
   try {
     const payment = await stripe.paymentIntents.create({
       amount,
@@ -45,35 +41,11 @@ const payment = async (req, res) => {
       newSubscribe.save().exec();
     }
 
-    // cron.schedule("*/1 * * * *", async () => {
-    //   console.log("schedule succ...");
-    // const paymentMethod = await stripe.paymentMethods.create({
-    //   type: 'card',
-    //   card: {
-    //     number: '4242424242424242',
-    //     exp_month: 12,
-    //     exp_year: 2022,
-    //     cvc: '314',
-    //   },
-    // });
-
-    // const paymentt = await stripe.paymentIntents.create({
-    //   amount,
-    //   currency: "USD",
-    //   description: "subscribe",
-    //   payment_method: id,
-    //   confirm: true,
-    // });
-    // });
-
     res.json({
       message: "Payment successful",
       success: true,
     });
   } catch (error) {
-    console.log("Error", error);
-
-    //if the payment faild i need to stop seller subscribtion
     await userModel
       .findOneAndUpdate({ _id: userId }, { subscribeStatus: "unActive" })
       .catch((err) => {
@@ -122,7 +94,6 @@ const cancelPayment = async (req, res) => {
       .catch((err) => {
         return res.status(400).json(err);
       });
-    console.log("caneled succc");
   });
   res.status(200).json("done");
 };

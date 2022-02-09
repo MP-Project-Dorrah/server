@@ -29,7 +29,7 @@ userRouter.post("/log", logIn);
 userRouter.delete("/delete/:_id", authentication, deleteUser);
 userRouter.get("/allRealestateAgents", allRealestateAgents);
 userRouter.get("/allRealestateAgents/:city", availableRealestateAgents);
-userRouter.get("/oneUser/:_id", oneUser);
+userRouter.get("/oneUser/:_id", authentication, oneUser);
 userRouter.post("/newRate", authentication, newRate);
 userRouter.put("/update", authentication, updateUser);
 userRouter.post("/available", authentication, avabilityToggle);
