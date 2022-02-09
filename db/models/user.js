@@ -17,8 +17,7 @@ const userSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false },
   resetLink: { data: String, default: "" },
   subscribeStatus: { type: String, defult: "unActive" }, //active - cancelPending  - unActive
-  sellerRateArr: { type: Array, default: [] },
-  realestateAgentRateArr: { type: Array, default: [] },
+  rateArr: { type: Array, default: [] },
   Availability: { type: Boolean, default: true },
   realestateAgentCommission: { type: Number },
   isDeleted: { type: Boolean, default: false },

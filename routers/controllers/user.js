@@ -2,6 +2,7 @@ const userModel = require("./../../db/models/user");
 const propertyModel = require("./../../db/models/property");
 const appointmentModel = require("./../../db/models/appointment");
 const interestListModel = require("./../../db/models/interestList");
+const subscribModel = require("./../../db/models/subscribe");
 
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
@@ -173,7 +174,7 @@ const ForgetPassword = (req, res) => {
   const { email } = req.body;
   userModel.findOne({ email }, (err, user) => {
     if (err || !user) {
-      return res.status(201).send("this user does not exists");
+      return res.status(201).send("You don't have an account");
     }
     if (!user.isVerified) {
       return res.status(201).send(" verify your email first ");
@@ -331,7 +332,7 @@ const deleteUser = async (req, res) => {
 
           return res.status(200).json("done");
         }
-        return res.status(400).json("this user already have been deleted");
+        return res.status(400).json("this user already has been deleted");
       } else {
         return res.status(404).json("user not found");
       }
@@ -375,14 +376,34 @@ const availableRealestateAgents = (req, res) => {
 
 const oneUser = async (req, res) => {
   const { _id } = req.params;
-  userModel
+  finalResult = [];
+  await userModel
     .find({ _id })
+    .populate("role")
     .then((result) => {
-      res.status(200).json(result);
+      finalResult.push(result);
+      // res.status(200).json(result);
     })
     .catch((err) => {
       res.status(400).json(err);
     });
+  await propertyModel
+    .find({ postedBy: _id, isDeleted: false })
+    .then((result) => {
+      finalResult.push(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+  await subscribModel
+    .find({ seller: _id })
+    .then((result) => {
+      finalResult.push(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+  res.status(200).json(finalResult);
 };
 
 const newRate = async (req, res) => {
@@ -417,8 +438,7 @@ const newRate = async (req, res) => {
 
 const updateUser = async (req, res) => {
   //cant set header....
-  const { _id, newUsername, newName, city, phonNumber, email } =
-    req.body;
+  const { _id, newUsername, newName, city, phonNumber, email } = req.body;
   if (email) {
     const saveEmail = email.toLowerCase();
     await userModel
@@ -468,7 +488,6 @@ const updateUserImg = (req, res) => {
   userModel
     .findOneAndUpdate({ _id }, { img: newImg }, { new: true })
     .then(async (result) => {
-      console.log(result);
       res.status(200).json(result);
     });
 };
@@ -477,12 +496,11 @@ const updateUserImg = (req, res) => {
 const avabilityToggle = (req, res) => {
   const { by } = req.body;
   userModel.findById(by).then((result) => {
-    console.log(result, "hereee");
     if (result.Availability) {
       userModel.updateOne({ _id: by }, { Availability: false }, (err) => {
         if (err) return res.status(400).json(err);
       });
-      res.status(200).json("turn to not available");
+      res.status(201).json("turn to not available");
     } else {
       userModel.updateOne({ _id: by }, { Availability: true }, (err) => {
         if (err) return res.status(400).json(err);
@@ -494,6 +512,7 @@ const avabilityToggle = (req, res) => {
 const allUsers = async (req, res) => {
   userModel
     .find({ isDeleted: false })
+    .populate("role")
     .then((result) => {
       res.status(200).json(result);
     })

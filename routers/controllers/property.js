@@ -40,7 +40,7 @@ const createProperty = (req, res) => {
   newProperty
     .save()
     .then((result) => {
-      res.json(result);
+      res.status(200).json(result);
     })
     .catch((err) => {
       res.send(err);
@@ -116,7 +116,7 @@ const searchProperty = async (req, res) => {
   let newArr = [];
   if (result.length) {
     result.map((ele) => {
-      if (ele.price < maxPrice && ele.price > minPrice) {
+      if (ele.price <= maxPrice && ele.price >= minPrice) {
         newArr.push(ele);
       }
     });
@@ -128,10 +128,8 @@ const searchProperty = async (req, res) => {
 
 const mapSortProperty = async (req, res) => {
   const { lat, lng, sortBy } = req.body;
-  // const restaurant = "restaurant"
   const newMapSort = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=20000&type=${sortBy}&keyword=cruise&key=AIzaSyC4JqBOR-km_LYFHF1rW7fWG-vrholjOZQ`;
   const result = await axios.get(newMapSort);
-  // console.log(result.data);
   res.status(200).json(result.data);
 };
 
@@ -144,13 +142,6 @@ const mapSortProperty2 = async (req, res) => {
     map.slice(props.location.indexOf("@") + 1, props.location.indexOf(","))
   );
 };
-
-// sort
-// https://www.google.co.in/maps/search/bank/@26.3391232,43.7617704,15z/data=!3m1!4b1?hl=en
-//user
-// https://www.google.co.in/maps/@26.3391232,43.7617704,15z/data=!3m1!4b1?hl=en
-// or
-// https://www.google.co.in/maps/place/Alhbas+Company/@26.0585439,43.4906239,13z/data=!4m13!1m7!3m6!1s0x158239c8dd7b86c9:0x6aaae76e5ab9eefa!2sRiyadh+Al+Khabra!3b1!8m2!3d26.0533267!4d43.5414667!3m4!1s0x1582377697faca5f:0x249f214b73aeb8bc!8m2!3d26.0267162!4d43.5258093?hl=en
 
 module.exports = {
   getAllProperty,
